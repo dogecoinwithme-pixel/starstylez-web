@@ -139,12 +139,7 @@
                 <div className="flex flex-col items-center justify-start min-h-screen p-5 space-y-5">
                     <h2 className="text-lg text-black font-semibold">Tip of the Day: {tipOfDay}</h2>
                     <img
-                        src="hairquiz.png"
-                        alt="StarStylez Logo"
-                        className="w-full h-[80%] object-contain"
-                        onError={(e) => (e.target.nextSibling.style.display = 'block')}
-                    />
-                    <p className="hidden text-red-500 text-base">Logo not found!</p>
+                    <h2 className="text-lg text-black font-semibold">StarStylez Logo</h2>
                     <button
                         className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
                         onClick={() => setScreen('tips')}
@@ -411,3 +406,4 @@
     </script>
 </body>
 </html>
+
