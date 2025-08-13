@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarStylez</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.24.7/babel.min.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+        }
+        #root {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-white font-sans">
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const haircareTips = [
+            "1. Wash your hair regularly with a mild shampoo.",
+            "2. Use conditioner after shampooing to keep hair soft.",
+            "3. Avoid excessive heat styling.",
+            "4. Eat a balanced diet for healthy hair.",
+            "5. Stay hydrated by drinking plenty of water daily.",
+            "6. Trim your hair every 6-8 weeks to prevent split ends.",
+            "7. Use a wide-tooth comb to detangle wet hair gently.",
+            "8. Apply a hair mask once a week for deep nourishment.",
+            "9. Protect your hair from sun exposure with a hat or scarf.",
+            "10. Avoid tight hairstyles that can cause breakage.",
+            "11. Use a silk or satin pillowcase to reduce hair friction.",
+            "12. Massage your scalp regularly to improve blood circulation.",
+            "13. Limit the use of chemical treatments like bleaching or perming.",
+            "14. Use natural oils like coconut or argan oil for extra moisture.",
+            "15. Rinse hair with cool water to seal the cuticle and add shine.",
+            "16. Avoid brushing hair when it’s wet to prevent breakage.",
+            "17. Choose hair products suited to your hair type.",
+            "18. Get enough sleep to support overall hair health.",
+            "19. Reduce stress through meditation or exercise for better hair growth.",
+            "20. Consult a dermatologist if you notice excessive hair loss."
+        ];
+
+        const quizQuestions = [
+            {
+                question: "How often should you trim your hair?",
+                answers: ["Every 6-8 weeks", "Once a year", "Never"],
+                correct: "Every 6-8 weeks",
+                tip: "Trimming every 6-8 weeks prevents split ends, especially for textured hair."
+            },
+            {
+                question: "Which vitamin is important for hair growth?",
+                answers: ["Vitamin C", "Biotin", "Vitamin D"],
+                correct: "Biotin",
+                tip: "Biotin strengthens hair follicles, promoting growth in coily hair."
+            },
+            {
+                question: "What is best for dry hair?",
+                answers: ["Coconut oil", "Olive oil", "Water only"],
+                correct: "Coconut oil",
+                tip: "Coconut oil penetrates the hair shaft, locking in moisture for dry hair."
+            },
+            {
+                question: "Which protective style is best for African American hair to retain moisture?",
+                answers: ["Box braids", "High ponytails", "Tight cornrows"],
+                correct: "Box braids",
+                tip: "Box braids protect hair ends and reduce manipulation, helping retain moisture."
+            },
+            {
+                question: "What ingredient should you look for in shampoos for coily hair?",
+                answers: ["Sulfate", "Shea butter", "Alcohol"],
+                correct: "Shea butter",
+                tip: "Shea butter in shampoos adds moisture without stripping natural oils."
+            },
+            {
+                question: "How often should African American women deep condition their hair?",
+                answers: ["Once a month", "Every wash day", "Never"],
+                correct: "Every wash day",
+                tip: "Deep conditioning every wash day restores moisture to textured hair."
+            },
+            {
+                question: "What is a common cause of breakage in textured hair?",
+                answers: ["Over-moisturizing", "Traction alopecia", "Using leave-in conditioner"],
+                correct: "Traction alopecia",
+                tip: "Avoid tight styles to prevent traction alopecia and hair breakage."
+            },
+            {
+                question: "Which oil is best for sealing moisture in kinky hair?",
+                answers: ["Jojoba oil", "Mineral oil", "Baby oil"],
+                correct: "Jojoba oil",
+                tip: "Jojoba oil mimics natural scalp oils, effectively sealing in moisture."
+            }
+        ];
+
+        const hairTypeQuestions = [
+            {
+                question: "What is your hair texture?",
+                answers: ["Fine", "Medium", "Coarse"],
+                key: "texture"
+            },
+            {
+                question: "How curly is your hair?",
+                answers: ["Straight", "Wavy", "Curly", "Coily"],
+                key: "curl"
+            },
+            {
+                question: "How porous is your hair? (Does it absorb water quickly?)",
+                answers: ["Low", "Medium", "High"],
+                key: "porosity"
+            }
+        ];
+
+        const hairTypeTips = {
+            "1A": ["Use lightweight products to avoid weighing down fine, straight hair."],
+            "1B": ["Incorporate volumizing shampoos for body."],
+            "2A": ["Use curl-defining creams for loose waves."],
+            "2B": ["Avoid heavy oils that can flatten waves."],
+            "3A": ["Use curl-enhancing products to define curls."],
+            "3C": ["Deep condition regularly to maintain curl hydration."],
+            "4A": ["Use shea butter-based products for coily hair."],
+            "4B": ["Seal moisture with jojoba oil for tight coils."]
+        };
+
+        function MenuScreen({ setScreen }) {
+            const tipOfDay = haircareTips[Math.floor(Math.random() * haircareTips.length)];
+
+            return (
+                <div className="flex flex-col items-center justify-start min-h-screen p-5 space-y-5">
+                    <h2 className="text-lg text-black font-semibold">Tip of the Day: {tipOfDay}</h2>
+                    <img
+                        src="hairquiz.png"
+                        alt="StarStylez Logo"
+                        className="w-full h-[80%] object-contain"
+                        onError={(e) => (e.target.nextSibling.style.display = 'block')}
+                    />
+                    <p className="hidden text-red-500 text-base">Logo not found!</p>
+                    <button
+                        className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                        onClick={() => setScreen('tips')}
+                    >
+                        Hair Care Tips
+                    </button>
+                    <button
+                        className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                        onClick={() => setScreen('quiz')}
+                    >
+                        Hair Care Quiz
+                    </button>
+                    <button
+                        className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                        onClick={() => setScreen('hairtype')}
+                    >
+                        Hair Type Quiz
+                    </button>
+                    <button
+                        className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                        onClick={() => setScreen('routine')}
+                    >
+                        Routine Tracker
+                    </button>
+                </div>
+            );
+        }
+
+        function TipsScreen({ setScreen }) {
+            return (
+                <div className="flex flex-col items-center justify-start min-h-screen p-5 space-y-3">
+                    {haircareTips.map((tip, index) => (
+                        <p key={index} className="text-sm text-black">{tip}</p>
+                    ))}
+                    <button
+                        className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                        onClick={() => setScreen('menu')}
+                    >
+                        Back to Menu
+                    </button>
+                </div>
+            );
+        }
+
+        function QuizScreen({ setScreen }) {
+            const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+            const [score, setScore] = useState(0);
+            const [incorrectTips, setIncorrectTips] = useState([]);
+            const [feedback, setFeedback] = useState('');
+
+            const handleAnswer = (answer) => {
+                const q = quizQuestions[currentQuestionIndex];
+                if (answer === q.correct) {
+                    setScore(score + 1);
+                    setFeedback('Correct!');
+                } else {
+                    setFeedback(`Incorrect! The correct answer was: ${q.correct}`);
+                    setIncorrectTips([...incorrectTips, q.tip]);
+                }
+                setTimeout(() => {
+                    setCurrentQuestionIndex(currentQuestionIndex + 1);
+                    setFeedback('');
+                }, 1500);
+            };
+
+            if (currentQuestionIndex < quizQuestions.length) {
+                const q = quizQuestions[currentQuestionIndex];
+                const progress = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+
+                return (
+                    <div className="flex flex-col items-center justify-start min-h-screen p-5 space-y-3">
+                        <p className="text-sm text-black">
+                            Question {currentQuestionIndex + 1} of {quizQuestions.length}
+                        </p>
+                        <div className="w-full bg-white rounded-full h-2.5 border border-gray-300">
+                            <div
+                                className="bg-pink-500 h-2.5 rounded-full"
+                                style={{ width: `${progress}%` }}
+                            ></div>
+                        </div>
+                        <p className="text-base text-black font-medium">{q.question}</p>
+                        {q.answers.map((ans, index) => (
+                            <button
+                                key={index}
+                                className="w-full py-3 bg-pink-500 text-white text-sm font-medium rounded hover:bg-pink-600"
+                                onClick={() => handleAnswer(ans)}
+                            >
+                                {ans}
+                            </button>
+                        ))}
+                        <p className="text-sm text-black">{feedback}</p>
+                    </div>
+                );
+            } else {
+                let feedbackText = '';
+                if (score === quizQuestions.length) {
+                    feedbackText = "Perfect! You're a hair care expert!";
+                } else if (score >= quizQuestions.length / 2) {
+                    feedbackText = "Great job! Here are some tips to improve:";
+                } else {
+                    feedbackText = "Keep learning! Here are tips to help you:";
+                }
+
+                return (
+                    <div className="flex flex-col items-center justify-start min-h-screen p-5 space-y-3">
+                        <p className="text-lg text-black font-semibold">
+                            Quiz Complete! Your score: {score}/{quizQuestions.length}
+                        </p>
+                        <p className="text-sm text-black">{feedbackText}</p>
+                        {incorrectTips.length > 0 ? (
+                            incorrectTips.map((tip, index) => (
+                                <p key={index} className="text-xs text-black">{tip}</p>
+                            ))
+                        ) : (
+                            <p className="text-xs text-black">No tips needed, you got everything right!</p>
+                        )}
+                        <button
+                            className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                            onClick={() => {
+                                setCurrentQuestionIndex(0);
+                                setScore(0);
+                                setIncorrectTips([]);
+                                setFeedback('');
+                            }}
+                        >
+                            Restart Quiz
+                        </button>
+                        <button
+                            className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                            onClick={() => setScreen('menu')}
+                        >
+                            Back to Menu
+                        </button>
+                    </div>
+                );
+            }
+        }
+
+        function HairTypeQuizScreen({ setScreen }) {
+            const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+            const [results, setResults] = useState({});
+
+            const handleAnswer = (answer) => {
+                const q = hairTypeQuestions[currentQuestionIndex];
+                setResults({ ...results, [q.key]: answer });
+                setCurrentQuestionIndex(currentQuestionIndex + 1);
+            };
+
+            const calculateHairType = () => {
+                const texture = results.texture || "Medium";
+                const curl = results.curl || "Straight";
+                if (curl === "Straight") return texture === "Fine" ? "1A" : "1B";
+                if (curl === "Wavy") return texture === "Fine" ? "2A" : "2B";
+                if (curl === "Curly") return texture === "Fine" ? "3A" : "3C";
+                return texture === "Fine" ? "4A" : "4B";
+            };
+
+            if (currentQuestionIndex < hairTypeQuestions.length) {
+                const q = hairTypeQuestions[currentQuestionIndex];
+                return (
+                    <div className="flex flex-col items-center justify-start min-h-screen p-5 space-y-3">
+                        <p className="text-base text-black font-medium">{q.question}</p>
+                        {q.answers.map((ans, index) => (
+                            <button
+                                key={index}
+                                className="w-full py-3 bg-pink-500 text-white text-sm font-medium rounded hover:bg-pink-600"
+                                onClick={() => handleAnswer(ans)}
+                            >
+                                {ans}
+                            </button>
+                        ))}
+                        <button
+                            className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                            onClick={() => setScreen('menu')}
+                        >
+                            Back to Menu
+                        </button>
+                    </div>
+                );
+            } else {
+                const hairType = calculateHairType();
+                const tips = hairTypeTips[hairType] || ["Consult a stylist for personalized advice."];
+                return (
+                    <div className="flex flex-col items-center justify-start min-h-screen p-5 space-y-3">
+                        <p className="text-lg text-black font-semibold">Your Hair Type: {hairType}</p>
+                        {tips.map((tip, index) => (
+                            <p key={index} className="text-sm text-black">{tip}</p>
+                        ))}
+                        <button
+                            className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                            onClick={() => setScreen('menu')}
+                        >
+                            Back to Menu
+                        </button>
+                    </div>
+                );
+            }
+        }
+
+        function RoutineScreen({ setScreen }) {
+            const [tasks, setTasks] = useState(() => {
+                const saved = localStorage.getItem('routineTasks');
+                return saved ? JSON.parse(saved) : {
+                    "Wash hair": false,
+                    "Apply conditioner": false,
+                    "Use hair oil": false,
+                    "Deep condition": false
+                };
+            });
+
+            useEffect(() => {
+                localStorage.setItem('routineTasks', JSON.stringify(tasks));
+            }, [tasks]);
+
+            const toggleTask = (task) => {
+                setTasks({ ...tasks, [task]: !tasks[task] });
+            };
+
+            const progress = (Object.values(tasks).filter(done => done).length / Object.keys(tasks).length) * 100;
+
+            return (
+                <div className="flex flex-col items-center justify-start min-h-screen p-5 space-y-3">
+                    <p className="text-base text-black font-semibold">Hair Care Routine Progress</p>
+                    <div className="w-full bg-white rounded-full h-2.5 border border-gray-300">
+                        <div
+                            className="bg-pink-500 h-2.5 rounded-full"
+                            style={{ width: `${progress}%` }}
+                        ></div>
+                    </div>
+                    {Object.keys(tasks).map((task, index) => (
+                        <button
+                            key={index}
+                            className="w-full py-3 bg-pink-500 text-white text-sm font-medium rounded hover:bg-pink-600"
+                            onClick={() => toggleTask(task)}
+                        >
+                            {task} [{tasks[task] ? '✓' : ' '}]
+                        </button>
+                    ))}
+                    <button
+                        className="w-full py-3 bg-pink-500 text-white text-base font-medium rounded hover:bg-pink-600"
+                        onClick={() => setScreen('menu')}
+                    >
+                        Back to Menu
+                    </button>
+                </div>
+            );
+        }
+
+        function App() {
+            const [screen, setScreen] = useState('menu');
+
+            return (
+                <div className="max-w-md mx-auto min-h-screen">
+                    {screen === 'menu' && <MenuScreen setScreen={setScreen} />}
+                    {screen === 'tips' && <TipsScreen setScreen={setScreen} />}
+                    {screen === 'quiz' && <QuizScreen setScreen={setScreen} />}
+                    {screen === 'hairtype' && <HairTypeQuizScreen setScreen={setScreen} />}
+                    {screen === 'routine' && <RoutineScreen setScreen={setScreen} />}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
